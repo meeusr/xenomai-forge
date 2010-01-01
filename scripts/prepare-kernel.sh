@@ -131,32 +131,6 @@ patch_link() {
 
 }
 
-patch_help() {
-    if which perl > /dev/null; then
-	hfile=$linux_tree/Documentation/Configure.help
-	if grep -iq "XENOMAI PARAMETERS" $hfile; then
-	    tmp=$hfile.tmp
-	    sed -n -e \
-		'/# BEGIN XENOMAI PARAMETERS/,/# END XENOMAI PARAMETERS/!p' \
-		$hfile > $tmp
-	    mv $tmp $hfile
-	    msg="updated"
-	else
-	    msg="added"
-	fi
-	kfiles=$xenomai_root/scripts/Kconfig.frag
-	for d in nucleus skins arch/$xenomai_arch drivers; do
-	  kfiles="$kfiles `find $xenomai_root/ksrc/$d -name Kconfig`"
-	done
-	echo "# BEGIN XENOMAI PARAMETERS" >> $hfile
-	perl $xenomai_root/scripts/help_from_kconfig.pl $kfiles >> $hfile
-	echo "# END XENOMAI PARAMETERS" >> $hfile
-	if test x$verbose = x1; then
-	    echo "Configuration help $msg."
-	fi
-    fi
-}
-
 generate_patch() {
     (
     cd "$temp_tree"
@@ -288,29 +262,15 @@ while : ; do
       fi
    fi
    case "$linux_arch" in
-   x86|i*86)
-      linux_arch=i386
+   x86*|i*86|amd64)
+      linux_arch=x86
       xenomai_arch=x86
-      x86_arch_bits=32
       ;;
-   x86_64|x8664|amd64|emt64)
-      linux_arch=x86_64
-      xenomai_arch=x86
-      x86_arch_bits=64
-      ;;
-   ppc|ppc32)
-      linux_arch=ppc
-      xenomai_arch=powerpc
-      ;;
-   ppc64|powerpc64)
-      linux_arch=ppc64
-      xenomai_arch=powerpc
-      ;;
-   powerpc)
+   ppc*|powerpc*)
       linux_arch=powerpc
       xenomai_arch=powerpc
       ;;
-   bfin|bfinnommu|blackfin)
+   bfin|blackfin)
       linux_arch=blackfin
       xenomai_arch=blackfin
       ;;
@@ -337,14 +297,6 @@ while : ; do
    fi
 done
 
-# i386 and x86_64 architectures are merged since 2.6.24. The resulting
-# combo is available from arch/x86 when present.
-if test "$xenomai_arch" = x86; then
-  if test -d $linux_tree/arch/x86; then
-      linux_arch=x86
-  fi
-fi
-
 foo=`grep '^KERNELSRC    := ' $linux_tree/Makefile | cut -d= -f2`
 if [ ! -z $foo ] ; then
     linux_tree=$foo
@@ -366,10 +318,6 @@ if test -r $linux_tree/include/linux/ipipe.h; then
     if test x$verbose = x1; then
     echo "Adeos found - bypassing patch."
     fi
-elif test -r $linux_tree/include/linux/adeos.h; then
-   echo "$me: Deprecated Adeos (oldgen) support found in $linux_tree;" >&2
-   echo "Upgrade required to Adeos/I-pipe (newgen)." >&2
-   exit 2
 else
    if test x$adeos_patch = x; then
       default_adeos_patch="`( ls $xenomai_root/ksrc/arch/$xenomai_arch/patches/adeos-ipipe-$linux_version*-{$linux_arch,$xenomai_arch}-*|sort -r ) 2>/dev/null | head -n1`"
@@ -413,6 +361,7 @@ if test -r $linux_tree/arch/$linux_arch/include/asm/ipipe.h \
    linux_include_asm=arch/$linux_arch/include/asm
    asm_ipipe_h=$linux_tree/$linux_include_asm/ipipe.h
 else
+   # For archs that did not move their headers to arch/*/include/asm/ yet.
    linux_include_asm=include/asm-$linux_arch
    asm_ipipe_h=`ls $linux_tree/include/asm-{$linux_arch,$xenomai_arch}/ipipe.h 2>/dev/null|head -n1`
 fi
@@ -470,89 +419,8 @@ case $linux_VERSION.$linux_PATCHLEVEL in
     ;;
 
     #
-    #  Linux v2.4 section
+    #  Paranoid section
     #
-
-    2.4)
-
-    export linux_arch
-    config_file=Config.in
-
-    patch_architecture_specific="n"
-    if ! grep -q CONFIG_XENO $linux_tree/Makefile; then
-	patch_ed Makefile <<EOF
-/DRIVERS := \$(DRIVERS-y)
--1r $xenomai_root/scripts/Modules.frag
-
-.
-wq
-EOF
-    fi
-    patch_architecture_specific="y"
-    for defconfig_file in .config arch/$linux_arch/defconfig; do
-       if test -w $linux_tree/$defconfig_file; then
-          if ! grep -q CONFIG_XENO $linux_tree/$defconfig_file; then
-	      patch_ed $defconfig_file <<EOF
-$
-r $xenomai_root/scripts/defconfig.frag
-.
-wq
-EOF
-          fi
-       fi
-    done
-    if ! grep -q CONFIG_XENO $linux_tree/arch/$linux_arch/Makefile; then
-	patch_ed arch/$linux_arch/Makefile <<EOF
-$
-a
-
-ifdef CONFIG_XENOMAI
-SUBDIRS += arch/$linux_arch/xenomai
-DRIVERS += arch/$linux_arch/xenomai/built-in.o
-endif
-.
-wq
-EOF
-    fi
-    patch_architecture_specific="n"
-    if ! grep -q CONFIG_XENO $linux_tree/drivers/Makefile; then
-	patch_ed drivers/Makefile <<EOF
-/include \$(TOPDIR)\/Rules.make
-i
-mod-subdirs += xenomai
-subdir-\$(CONFIG_XENOMAI) += xenomai
-
-.
-wq
-EOF
-    fi
-    if ! grep -q CONFIG_XENO $linux_tree/kernel/Makefile; then
-	patch_ed kernel/Makefile <<EOF
-/include \$(TOPDIR)\/Rules.make
-i
-mod-subdirs := xenomai
-subdir-\$(CONFIG_XENOMAI) += xenomai
-obj-\$(CONFIG_XENOMAI) += xenomai/arch/generic/built-in.o
-
-.
-wq
-EOF
-    fi
-    patch_architecture_specific="y"
-    if ! grep -iq xenomai $linux_tree/arch/$linux_arch/config.in; then
-	patch_ed arch/$linux_arch/config.in <<EOF
-$
-a
-
-source arch/$linux_arch/xenomai/Config.in
-.
-wq
-EOF
-
-    fi
-
-    patch_help
-    ;;
 
     *)
 

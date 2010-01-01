@@ -43,7 +43,7 @@ static int xnarch_trap_fault(unsigned event, unsigned domid, void *data)
 	xnarch_fltinfo_t fltinfo;
 
 	fltinfo.vector = event;
-	fltinfo.errcode = regs->x86reg_origax;
+	fltinfo.errcode = regs->orig_ax;
 	fltinfo.regs = regs;
 
 	return xnpod_trap_fault(&fltinfo);
