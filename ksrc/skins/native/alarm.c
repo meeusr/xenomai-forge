@@ -237,10 +237,8 @@ int rt_alarm_create(RT_ALARM *alarm,
 	appendq(alarm->rqueue, &alarm->rlink);
 	xnlock_put_irqrestore(&nklock, s);
 
-#ifdef CONFIG_XENO_OPT_PERVASIVE
 	xnsynch_init(&alarm->synch_base, XNSYNCH_PRIO, NULL);
 	alarm->cpid = 0;
-#endif /* CONFIG_XENO_OPT_PERVASIVE */
 
 	if (name) {
 		if (!*name)
@@ -318,9 +316,7 @@ int rt_alarm_delete(RT_ALARM *alarm)
 
 	xntimer_destroy(&alarm->timer_base);
 
-#ifdef CONFIG_XENO_OPT_PERVASIVE
 	rc = xnsynch_destroy(&alarm->synch_base);
-#endif /* CONFIG_XENO_OPT_PERVASIVE */
 
 	if (alarm->handle)
 		xnregistry_remove(alarm->handle);
