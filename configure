@@ -706,7 +706,7 @@ PACKAGE_STRING='Xenomai 2.99.00'
 PACKAGE_BUGREPORT='xenomai-help@gna.org'
 PACKAGE_URL=''
 
-ac_unique_file="src/native/task.c"
+ac_unique_file="src/posix/thread.c"
 ac_default_prefix=/usr/xenomai
 # Factoring default headers for most tests.
 ac_includes_default="\
