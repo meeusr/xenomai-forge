@@ -248,17 +248,7 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = \
-	clocktest \
-	cyclic \
-	irqbench \
-	klatency \
-	latency \
-	regression \
-	switchtest \
-	unit \
-	xeno-test
-
+SUBDIRS = latency cyclic switchtest clocktest unit sigtest # klatency
 all: all-recursive
 
 .SUFFIXES:
