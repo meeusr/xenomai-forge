@@ -7,5 +7,6 @@ SUBDIRS =	\
 	rtdm	\
 	drvlib	\
 	copperplate	\
+	vxworks	\
 	testsuite \
 	utils
