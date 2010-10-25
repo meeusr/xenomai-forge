@@ -185,6 +185,10 @@ VERSION = @VERSION@
 XENO_BUILD_STRING = @XENO_BUILD_STRING@
 XENO_DLOPEN_CONSTRAINT = @XENO_DLOPEN_CONSTRAINT@
 XENO_HOST_STRING = @XENO_HOST_STRING@
+<<<<<<< HEAD
+=======
+XENO_LINUX_ARCH = @XENO_LINUX_ARCH@
+>>>>>>> build: enable building for cobalt/mercury cores
 XENO_MAYBE_DOCDIR = @XENO_MAYBE_DOCDIR@
 XENO_POSIX_WRAPPERS = @XENO_POSIX_WRAPPERS@
 XENO_TARGET_ARCH = @XENO_TARGET_ARCH@
@@ -532,6 +536,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+@XENO_COBALT_FALSE@distclean-local:
 clean: clean-recursive
 
 clean-am: clean-generic clean-libtool mostlyclean-am
@@ -547,18 +552,9 @@ dvi-am:
 
 html: html-recursive
 
-<<<<<<< HEAD
-html-am:
-
-=======
-<<<<<<< HEAD
->>>>>>> src: introduce the Copperplate interface
-info: info-am
-=======
 html-am:
 
 info: info-recursive
->>>>>>> src: introduce the Copperplate interface
 
 info-am:
 
@@ -572,18 +568,9 @@ install-exec-am:
 
 install-html: install-html-recursive
 
-<<<<<<< HEAD
-install-html-am:
-
-=======
-<<<<<<< HEAD
->>>>>>> src: introduce the Copperplate interface
-install-info: install-info-am
-=======
 install-html-am:
 
 install-info: install-info-recursive
->>>>>>> src: introduce the Copperplate interface
 
 install-info-am:
 
@@ -591,18 +578,9 @@ install-man:
 
 install-pdf: install-pdf-recursive
 
-<<<<<<< HEAD
-install-pdf-am:
-
-=======
-<<<<<<< HEAD
->>>>>>> src: introduce the Copperplate interface
-install-ps: install-ps-am
-=======
 install-pdf-am:
 
 install-ps: install-ps-recursive
->>>>>>> src: introduce the Copperplate interface
 
 install-ps-am:
 
@@ -626,20 +604,8 @@ ps-am:
 
 uninstall-am:
 
-<<<<<<< HEAD
-.MAKE: all install-am install-strip
-
-.PHONY: all all-am check check-am clean clean-generic clean-libtool \
-	distclean distclean-generic distclean-hdr distclean-libtool \
-	distclean-local distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-=======
-<<<<<<< HEAD
-.MAKE: install-am install-strip
-=======
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
 	ctags-recursive install-am install-strip tags-recursive
->>>>>>> src: introduce the Copperplate interface
 
 .PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
 	all all-am check check-am clean clean-generic clean-libtool \
@@ -647,7 +613,6 @@ uninstall-am:
 	distclean-hdr distclean-libtool distclean-local distclean-tags \
 	distdir dvi dvi-am html html-am info info-am install \
 	install-am install-data install-data-am install-dvi \
->>>>>>> src: introduce the Copperplate interface
 	install-dvi-am install-exec install-exec-am install-html \
 	install-html-am install-info install-info-am install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
@@ -656,9 +621,15 @@ uninstall-am:
 	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
 	ps ps-am tags tags-recursive uninstall uninstall-am
 
+<<<<<<< HEAD
 distclean-local:
 	rm -fr xenomai asm asm-generic
+=======
 
+@XENO_COBALT_TRUE@distclean-local:
+@XENO_COBALT_TRUE@	rm -fr xenomai asm asm-generic
+
+>>>>>>> build: enable building for cobalt/mercury cores
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
