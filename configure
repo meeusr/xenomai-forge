@@ -757,7 +757,6 @@ XENO_USER_LDFLAGS
 XENO_USER_CFLAGS
 XENO_HOST_STRING
 XENO_BUILD_STRING
-XENO_LINUX_ARCH
 XENO_TARGET_ARCH
 LATEX_MODE
 LATEX_BATCHMODE
@@ -951,6 +950,7 @@ enable_arm_eabi
 enable_arm_mach
 enable_arm_tsc
 enable_arm_arch
+enable_doc_install
 enable_dox_doc
 enable_dbx
 enable_dbx_network
@@ -1622,6 +1622,7 @@ Optional Features:
                           Select ARM architecture version, if the machine
                           selected with --enable-arm-mach supports several
                           architecture versions
+  --disable-doc-install   Do not install documentation
   --enable-dox-doc        Build Doxygen documentation
   --enable-dbx            Build Docbook XML documentation.
   --enable-dbx-network    Try to access Docbook DTD and XSL stylesheets
@@ -5312,24 +5313,20 @@ case "$build_for" in
  i*86*-*)
 	use__thread=yes
 	XENO_TARGET_ARCH=x86
-	XENO_LINUX_ARCH=i386
 	CONFIG_XENO_FASTSYNCH=y
 	CONFIG_XENO_DEFAULT_PERIOD=100000
 	;;
  ppc-*|powerpc-*|powerpc64-*|ppc64-*)
 	XENO_TARGET_ARCH=powerpc
-	XENO_LINUX_ARCH=powerpc
 	CONFIG_XENO_FASTSYNCH=y
 	CONFIG_XENO_DEFAULT_PERIOD=100000
 	;;
  bfin-*|bfinnommu-*|blackfin-*)
 	XENO_TARGET_ARCH=blackfin
-	XENO_LINUX_ARCH=blackfin
 	CONFIG_XENO_DEFAULT_PERIOD=100000
 	;;
  arm*-*)
 	XENO_TARGET_ARCH=arm
-	XENO_LINUX_ARCH=arm
 	CONFIG_XENO_DEFAULT_PERIOD=1000000
 	# We set CONFIG_XENO_FASTSYNCH later, when we know what
 	# architecture we are running
@@ -5337,13 +5334,11 @@ case "$build_for" in
  x86_64-*|amd64-*)
 	use__thread=yes
 	XENO_TARGET_ARCH=x86
-	XENO_LINUX_ARCH=x86_64
 	CONFIG_XENO_FASTSYNCH=y
 	CONFIG_XENO_DEFAULT_PERIOD=100000
 	;;
  nios2-*)
 	XENO_TARGET_ARCH=nios2
-	XENO_LINUX_ARCH=nios2
 	CONFIG_XENO_DEFAULT_PERIOD=10000000
 	;;
  *) echo ""
@@ -6039,13 +6034,13 @@ if test "${lt_cv_nm_interface+set}" = set; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:6042: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:6037: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6045: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:6040: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6048: output\"" >&5)
+  (eval echo "\"\$as_me:6043: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -7143,7 +7138,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 7146 "configure"' > conftest.$ac_ext
+  echo '#line 7141 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8505,11 +8500,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8508: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8503: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8512: \$? = $ac_status" >&5
+   echo "$as_me:8507: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8829,11 +8824,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8832: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8827: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8836: \$? = $ac_status" >&5
+   echo "$as_me:8831: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8934,11 +8929,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8937: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8932: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8941: \$? = $ac_status" >&5
+   echo "$as_me:8936: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8989,11 +8984,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8992: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8987: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8996: \$? = $ac_status" >&5
+   echo "$as_me:8991: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11361,7 +11356,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11364 "configure"
+#line 11359 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11461,7 +11456,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11464 "configure"
+#line 11459 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12153,6 +12148,18 @@ if test \! -d $srcdir/doc ; then
     unset XENO_MAYBE_DOCDIR
 else
     XENO_MAYBE_DOCDIR=doc
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether installing documentation" >&5
+$as_echo_n "checking whether installing documentation... " >&6; }
+    # Check whether --enable-doc-install was given.
+if test "${enable_doc_install+set}" = set; then :
+  enableval=$enable_doc_install; case "$enableval" in
+       y | yes);;
+       *) unset XENO_MAYBE_DOCDIR;;
+       esac
+fi
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${XENO_MAYBE_DOCDIR:-no}" >&5
+$as_echo "${XENO_MAYBE_DOCDIR:-no}" >&6; }
 fi
 
 
@@ -13028,7 +13035,6 @@ $as_echo "$XENO_TEST_DIR" >&6; }
 
 
 
-
 if test x$rtcore_type = xcobalt; then
    base=asm-$XENO_TARGET_ARCH
    ac_config_links="$ac_config_links src/include/asm/xenomai:$srcdir/include/$base"
@@ -13042,7 +13048,7 @@ ac_config_files="$ac_config_files Makefile config/Makefile scripts/Makefile scri
 
 
 if test \! x$XENO_MAYBE_DOCDIR = x ; then
-      ac_config_files="$ac_config_files doc/Makefile doc/txt/Makefile doc/man/Makefile doc/man/clocktest.man doc/man/cyclictest.man doc/man/klatency.man doc/man/latency.man doc/man/rtcanconfig.man doc/man/rtcanrecv.man doc/man/rtcansend.man doc/man/switchbench.man doc/man/switchtest.man doc/man/xeno.man doc/man/xeno-config.man doc/man/xeno-info.man doc/doxygen/Makefile doc/doxygen/Doxyfile-common doc/doxygen/Doxyfile doc/doxygen/Doxyfile-native doc/doxygen/Doxyfile-nucleus doc/doxygen/Doxyfile-posix doc/doxygen/Doxyfile-rtdm doc/docbook/Makefile doc/docbook/catalog doc/docbook/custom-stylesheets/Makefile doc/docbook/custom-stylesheets/xsl/Makefile doc/docbook/custom-stylesheets/xsl/common/Makefile doc/docbook/custom-stylesheets/xsl/fo/Makefile doc/docbook/custom-stylesheets/xsl/html/Makefile doc/docbook/custom-stylesheets/xsl/html/chunk.xsl doc/docbook/custom-stylesheets/xsl/html/onechunk.xsl doc/docbook/xenomai/Makefile"
+      ac_config_files="$ac_config_files doc/Makefile doc/txt/Makefile doc/man/Makefile doc/man/clocktest.man doc/man/cyclictest.man doc/man/klatency.man doc/man/latency.man doc/man/rtcanconfig.man doc/man/rtcanrecv.man doc/man/rtcansend.man doc/man/switchbench.man doc/man/switchtest.man doc/man/xeno.man doc/man/xeno-config.man doc/doxygen/Makefile doc/doxygen/Doxyfile-common doc/doxygen/Doxyfile doc/doxygen/Doxyfile-native doc/doxygen/Doxyfile-nucleus doc/doxygen/Doxyfile-posix doc/doxygen/Doxyfile-rtdm doc/docbook/Makefile doc/docbook/catalog doc/docbook/custom-stylesheets/Makefile doc/docbook/custom-stylesheets/xsl/Makefile doc/docbook/custom-stylesheets/xsl/common/Makefile doc/docbook/custom-stylesheets/xsl/fo/Makefile doc/docbook/custom-stylesheets/xsl/html/Makefile doc/docbook/custom-stylesheets/xsl/html/chunk.xsl doc/docbook/custom-stylesheets/xsl/html/onechunk.xsl doc/docbook/xenomai/Makefile"
 
 fi
 
@@ -14218,7 +14224,6 @@ do
     "doc/man/switchtest.man") CONFIG_FILES="$CONFIG_FILES doc/man/switchtest.man" ;;
     "doc/man/xeno.man") CONFIG_FILES="$CONFIG_FILES doc/man/xeno.man" ;;
     "doc/man/xeno-config.man") CONFIG_FILES="$CONFIG_FILES doc/man/xeno-config.man" ;;
-    "doc/man/xeno-info.man") CONFIG_FILES="$CONFIG_FILES doc/man/xeno-info.man" ;;
     "doc/doxygen/Makefile") CONFIG_FILES="$CONFIG_FILES doc/doxygen/Makefile" ;;
     "doc/doxygen/Doxyfile-common") CONFIG_FILES="$CONFIG_FILES doc/doxygen/Doxyfile-common" ;;
     "doc/doxygen/Doxyfile") CONFIG_FILES="$CONFIG_FILES doc/doxygen/Doxyfile" ;;

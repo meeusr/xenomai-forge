@@ -186,10 +186,6 @@ XENO_BUILD_STRING = @XENO_BUILD_STRING@
 XENO_DLOPEN_CONSTRAINT = @XENO_DLOPEN_CONSTRAINT@
 XENO_FUSE_CFLAGS = @XENO_FUSE_CFLAGS@
 XENO_HOST_STRING = @XENO_HOST_STRING@
-<<<<<<< HEAD
-=======
-XENO_LINUX_ARCH = @XENO_LINUX_ARCH@
->>>>>>> build: enable building for cobalt/mercury cores
 XENO_MAYBE_DOCDIR = @XENO_MAYBE_DOCDIR@
 XENO_POSIX_WRAPPERS = @XENO_POSIX_WRAPPERS@
 XENO_TARGET_ARCH = @XENO_TARGET_ARCH@
@@ -622,15 +618,10 @@ uninstall-am:
 	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
 	ps ps-am tags tags-recursive uninstall uninstall-am
 
-<<<<<<< HEAD
-distclean-local:
-	rm -fr xenomai asm asm-generic
-=======
 
 @XENO_COBALT_TRUE@distclean-local:
 @XENO_COBALT_TRUE@	rm -fr xenomai asm asm-generic
 
->>>>>>> build: enable building for cobalt/mercury cores
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
