@@ -94,7 +94,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = asm-generic asm-blackfin asm-x86 asm-powerpc asm-arm \
-	asm-nios2 asm-sim analogy native nucleus posix rtdm
+	asm-nios2 asm-sh asm-sim analogy native nucleus posix rtdm
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -288,6 +288,7 @@ nodist_include_HEADERS = $(CONFIG_HEADER)
 @XENO_COBALT_TRUE@	asm-powerpc \
 @XENO_COBALT_TRUE@	asm-arm \
 @XENO_COBALT_TRUE@	asm-nios2 \
+@XENO_COBALT_TRUE@	asm-sh \
 @XENO_COBALT_TRUE@	asm-sim \
 @XENO_COBALT_TRUE@	analogy \
 @XENO_COBALT_TRUE@	native \
