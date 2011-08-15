@@ -261,6 +261,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libnative.la
+pkgconfigdir = $(libdir)/pkgconfig
 libnative_la_LDFLAGS = @XENO_DLOPEN_CONSTRAINT@ -version-info 3:0:0 -lpthread
 libnative_la_SOURCES = \
 	alarm.c \
