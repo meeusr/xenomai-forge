@@ -320,7 +320,7 @@ if test -r $linux_tree/include/linux/ipipe.h; then
     fi
 else
    if test x$adeos_patch = x; then
-      default_adeos_patch="`( ls $xenomai_root/ksrc/arch/$xenomai_arch/patches/adeos-ipipe-$linux_version*-{$linux_arch,$xenomai_arch}-*|sort -r ) 2>/dev/null | head -n1`"
+      default_adeos_patch="`( ls $xenomai_root/kernel/arch/$xenomai_arch/patches/adeos-ipipe-$linux_version*-{$linux_arch,$xenomai_arch}-*|sort -r ) 2>/dev/null | head -n1`"
    fi
    if test x$default_adeos_patch = x; then
       if test x$verbose = x1; then
@@ -436,16 +436,16 @@ esac
 
 patch_kernelversion_specific="n"
 patch_architecture_specific="y"
-patch_link r m ksrc/arch/$xenomai_arch arch/$linux_arch/xenomai
+patch_link r m kernel/arch/$xenomai_arch arch/$linux_arch/xenomai
 patch_architecture_specific="n"
-patch_link n m ksrc/ kernel/xenomai
-patch_link n m ksrc/arch kernel/xenomai/arch
-patch_link r m ksrc/arch/generic kernel/xenomai/arch/generic
-patch_link n m ksrc/nucleus kernel/xenomai/nucleus
-patch_link n m ksrc/native kernel/xenomai/native
-patch_link n m ksrc/posix kernel/xenomai/posix
-patch_link n m ksrc/rtdm kernel/xenomai/rtdm
-patch_link r m ksrc/drivers drivers/xenomai
+patch_link n m kernel/ kernel/xenomai
+patch_link n m kernel/arch kernel/xenomai/arch
+patch_link r m kernel/arch/generic kernel/xenomai/arch/generic
+patch_link n m kernel/nucleus kernel/xenomai/nucleus
+patch_link n m kernel/native kernel/xenomai/native
+patch_link n m kernel/posix kernel/xenomai/posix
+patch_link n m kernel/rtdm kernel/xenomai/rtdm
+patch_link r m kernel/drivers drivers/xenomai
 patch_architecture_specific="y"
 patch_link r n include/asm-$xenomai_arch $linux_include_asm/xenomai
 patch_architecture_specific="n"
