@@ -1806,8 +1806,6 @@ void rtdm_nrtsig_pend(rtdm_nrtsig_t *nrt_sig);
  * @{
  */
 
-#ifdef DOXYGEN_CPP
-
 struct rtdm_mmap_data {
 	void *src_vaddr;
 	phys_addr_t src_paddr;
@@ -2109,8 +2107,6 @@ int rtdm_munmap(rtdm_user_info_t *user_info, void *ptr, size_t len)
 	return err;
 }
 EXPORT_SYMBOL_GPL(rtdm_munmap);
-
-#endif /* DOXYGEN_CPP */
 
 #ifdef DOXYGEN_CPP /* Only used for doxygen doc generation */
 

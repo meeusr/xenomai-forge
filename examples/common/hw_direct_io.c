@@ -19,8 +19,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <posix/time.h>
-#include <posix/pthread.h>
+#include <cobalt/time.h>
+#include <cobalt/pthread.h>
 #include <sys/mman.h>
 #include <unistd.h>
 
