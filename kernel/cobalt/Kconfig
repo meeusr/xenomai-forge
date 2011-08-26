@@ -1,13 +1,5 @@
 
-menuconfig XENO_SKIN_POSIX
-	depends on XENOMAI
-	bool "POSIX API"
-	default y
-	help
-
-	A POSIX-compliant skin.
-
-if XENO_SKIN_POSIX
+menu "POSIX features"
 
 config XENO_OPT_POSIX_PERIOD
 	int "Base period (us)" if XENO_OPT_TIMING_PERIODIC
@@ -38,27 +30,13 @@ config XENO_OPT_POSIX_SHM
 	using the RTDM skin is the preferred way of implementing drivers), leave
 	this option unselected.
 
-if XENO_SKIN_RTDM = m
-	comment "Note: Support for select is not available"
-	comment "if the RTDM skin is compiled as a module."
-endif
-
 config XENO_OPT_POSIX_SELECT
 	bool "Select syscall"
 	select XENO_OPT_SELECT
-	depends on XENO_SKIN_RTDM != m
 	help
 
 	This option allows applications using the Xenomai POSIX skin
 	in user-space to use the "select" syscall with Xenomai POSIX
 	skin file descriptors.
 
-config XENO_OPT_DEBUG_POSIX
-	bool "Debugging support"
-	default n
-	help
-
-	When enabled, this option makes the skin warn about not properly
-	cleaned up POSIX objects it detects on process termination.
-
-endif
+endmenu

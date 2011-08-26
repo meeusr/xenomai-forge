@@ -37,10 +37,8 @@
 #include "sem.h"
 #include "shm.h"
 #include "timer.h"
-#if defined(CONFIG_XENO_SKIN_RTDM) || defined (CONFIG_XENO_SKIN_RTDM_MODULE)
 #include <rtdm/rtdm_driver.h>
 #define RTDM_FD_MAX CONFIG_XENO_OPT_RTDM_FILDES
-#endif /* RTDM */
 
 int pse51_muxid;
 
@@ -2031,7 +2029,6 @@ static int __timer_getoverrun(timer_t tm)
 static int fd_valid_p(int fd)
 {
 	pse51_assoc_t *assoc;
-#if defined(CONFIG_XENO_SKIN_RTDM) || defined (CONFIG_XENO_SKIN_RTDM_MODULE)
 	const int rtdm_fd_start = FD_SETSIZE - RTDM_FD_MAX;
 
 	if (fd >= rtdm_fd_start) {
@@ -2043,7 +2040,6 @@ static int fd_valid_p(int fd)
 		}
 		return 0;
 	}
-#endif /* RTDM */
 
 	assoc = pse51_assoc_lookup(&pse51_queues()->uqds, fd);
 	return assoc != NULL;
@@ -2066,13 +2062,11 @@ static int first_fd_valid_p(fd_set *fds[XNSELECT_MAX_TYPES], int nfds)
 static int select_bind_one(struct xnselector *selector, unsigned type, int fd)
 {
 	pse51_assoc_t *assoc;
-#if defined(CONFIG_XENO_SKIN_RTDM) || defined (CONFIG_XENO_SKIN_RTDM_MODULE)
 	const int rtdm_fd_start = FD_SETSIZE - RTDM_FD_MAX;
 
 	if (fd >= rtdm_fd_start)
 		return rtdm_select_bind(fd - rtdm_fd_start,
 					selector, type, fd);
-#endif /* CONFIG_XENO_SKIN_RTDM */
 
 	assoc = pse51_assoc_lookup(&pse51_queues()->uqds, fd);
 	if (!assoc)
