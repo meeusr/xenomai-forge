@@ -943,6 +943,7 @@ enable_debug
 enable_lores_clock
 enable_clock_monotonic_raw
 enable_assert
+enable_async_cancel
 enable_pshared
 enable_registry
 enable_smp
@@ -6033,13 +6034,13 @@ if test "${lt_cv_nm_interface+set}" = set; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:6036: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:6037: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6039: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:6040: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6042: output\"" >&5)
+  (eval echo "\"\$as_me:6043: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -7137,7 +7138,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 7140 "configure"' > conftest.$ac_ext
+  echo '#line 7141 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8499,11 +8500,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8502: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8503: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8506: \$? = $ac_status" >&5
+   echo "$as_me:8507: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8823,11 +8824,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8826: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8827: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8830: \$? = $ac_status" >&5
+   echo "$as_me:8831: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8928,11 +8929,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8931: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8932: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8935: \$? = $ac_status" >&5
+   echo "$as_me:8936: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8983,11 +8984,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8986: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8987: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8990: \$? = $ac_status" >&5
+   echo "$as_me:8991: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11355,7 +11356,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11358 "configure"
+#line 11359 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11455,7 +11456,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11458 "configure"
+#line 11459 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11779,9 +11780,9 @@ $as_echo "${use_assert:-no}" >&6; }
 async_cancel=
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether asynchronous cancellation of threads is enabled" >&5
 $as_echo_n "checking whether asynchronous cancellation of threads is enabled... " >&6; }
-# Check whether --enable-assert was given.
-if test "${enable_assert+set}" = set; then :
-  enableval=$enable_assert; case "$enableval" in
+# Check whether --enable-async-cancel was given.
+if test "${enable_async_cancel+set}" = set; then :
+  enableval=$enable_async_cancel; case "$enableval" in
 	y | yes) async_cancel=y ;;
 	n | no) unset async_cancel ;;
 	esac
