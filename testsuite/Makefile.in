@@ -67,8 +67,8 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = latency cyclic switchtest clocktest unit xeno-test \
-	klatency
+DIST_SUBDIRS = clocktest cyclic latency regression switchtest unit \
+	xeno-test
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -251,7 +251,15 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-@XENO_COBALT_TRUE@SUBDIRS = latency cyclic switchtest clocktest unit xeno-test klatency
+@XENO_COBALT_TRUE@SUBDIRS = \
+@XENO_COBALT_TRUE@	clocktest \
+@XENO_COBALT_TRUE@	cyclic \
+@XENO_COBALT_TRUE@	latency \
+@XENO_COBALT_TRUE@	regression \
+@XENO_COBALT_TRUE@	switchtest \
+@XENO_COBALT_TRUE@	unit \
+@XENO_COBALT_TRUE@	xeno-test
+
 all: all-recursive
 
 .SUFFIXES:
@@ -598,6 +606,7 @@ uninstall-am:
 	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
 	uninstall uninstall-am
 
+@XENO_COBALT_TRUE@	klatency
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
