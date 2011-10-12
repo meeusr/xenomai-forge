@@ -23,6 +23,7 @@
 #include <copperplate/syncobj.h>
 #include <copperplate/hash.h>
 #include <copperplate/cluster.h>
+#include <copperplate/registry.h>
 
 struct psos_task_args {
 	void (*entry)(u_long a0, u_long a1, u_long a2, u_long a3);
@@ -48,6 +49,7 @@ struct psos_task {
 	struct threadobj thobj;
 	struct syncobj sobj;	/* For events. */
 	struct clusterobj cobj;
+	struct fsobj fsobj;
 };
 
 #define task_magic	0x8181fafa

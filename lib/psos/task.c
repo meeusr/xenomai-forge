@@ -26,6 +26,7 @@
 #include <assert.h>
 #include <sched.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <copperplate/panic.h>
 #include <copperplate/heapobj.h>
 #include <copperplate/threadobj.h>
@@ -139,6 +140,36 @@ struct psos_task *get_psos_task_or_self(u_long tid, int *err_r)
 	return current;
 }
 
+#ifdef CONFIG_XENO_REGISTRY
+
+static size_t task_registry_read(struct fsobj *fsobj,
+                                 char *buf, size_t size, off_t offset)
+{
+        struct psos_task *task;
+        size_t len;
+
+        task = container_of(fsobj, struct psos_task, fsobj);
+        len =  sprintf(buf,    "name       = %s\n", task->name);
+	len += sprintf(buf+len,"prio       = %d\n", threadobj_get_priority(&task->thobj));
+	len += sprintf(buf+len,"args       = [%ld,%ld,%ld,%ld]\n",task->args.arg0,
+		       task->args.arg1,task->args.arg2,task->args.arg3); 
+	len += sprintf(buf+len,"regs       = [%ld,%ld,%ld,%ld]\n",task->notepad[0],
+                       task->notepad[1],task->notepad[2],task->notepad[3]);
+	len += sprintf(buf+len,"pend evnts = 0x%8lx\n",task->events);
+
+        return len;
+}
+
+static struct registry_operations registry_ops = {
+        .read   = task_registry_read
+};
+
+#else
+
+static struct registry_operations registry_ops;
+
+#endif /* CONFIG_XENO_REGISTRY */
+
 void put_psos_task(struct psos_task *task)
 {
 	threadobj_unlock(&task->thobj);
@@ -158,6 +189,7 @@ static void task_finalizer(struct threadobj *thobj)
 	/* We have to hold a lock on a syncobj to destroy it. */
 	syncobj_lock(&task->sobj, &syns);
 	syncobj_destroy(&task->sobj, &syns);
+	registry_destroy_file(&task->fsobj);
 	threadobj_destroy(&task->thobj);
 
 	xnfree(task);
@@ -175,6 +207,10 @@ static void *task_trampoline(void *arg)
 		goto done;
 
 	COPPERPLATE_PROTECT(svc);
+
+	ret = __bt(registry_add_file(&task->fsobj, O_RDONLY,"/psos/tasks/%s", task->name));
+        if (ret)
+                warning("failed to export task %s to registry",task->name);
 
 	threadobj_wait_start(&task->thobj);
 
@@ -318,10 +354,13 @@ u_long t_create(const char *name, u_long prio,
 	idata.priority = cprio;
 	threadobj_init(&task->thobj, &idata);
 
+	registry_init_file(&task->fsobj, &registry_ops);
+
 	ret = __bt(-__RT(pthread_create(&task->thobj.tid, &thattr,
 					&task_trampoline, task)));
 	pthread_attr_destroy(&thattr);
 	if (ret) {
+		registry_destroy_file(&task->fsobj);
 		cluster_delobj(&psos_task_table, &task->cobj);
 		threadobj_destroy(&task->thobj);
 		ret = ERR_NOTCB;
